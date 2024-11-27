@@ -1,57 +1,55 @@
- 
 <template>
-  <div class="category-container">
-    <img class="category-image" :src="image" :alt="name" />
-    <h3 class="category-name">{{ name }}</h3>
-    <h4 class="category-count">{{ productCount }}</h4>
+  <div class="cat1" :style="{ backgroundColor: categoryColor }">
+    <img :src="categoryImage" alt="category image" />
+    <p class="title">{{ categoryText }}</p>
+    <p class="subtitle">{{ itemsCount }} items</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Category",
   props: {
-    name: String,
-    productCount: String,
-    image: String,
-    color: String,
+    categoryImage: String,
+    categoryText: String,
+    itemsCount: Number,
+    categoryColor: String,
   },
 };
 </script>
 
-<style scoped>
-.category-container {
+<style>
+.cat1 {
+  height: 150px;
+  width: 120px;
+  border-radius: 5px;
+  border: rgb(220, 209, 209) 1px solid;
   display: flex;
   flex-direction: column;
-  width: 20%;
-  height: 88px; 
-  border: 2px solid #000; 
-  border-radius: 8px;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  padding: 8px;
+  box-sizing: border-box;
+  text-align: center;
   cursor: pointer;
-  transition: transform 0.3s;
-  margin-left: 15px;
 }
 
-.category-container:hover {
-  transform: scale(0.95);
+.cat1 img {
+  margin-bottom: 8px;
+  max-width: 70%;
+  max-height: 50%;
+  object-fit: contain;
 }
 
-.category-image {
-  width: 20%; 
-  height: 60px; 
-  object-fit: cover;
-  border-radius: 4px; 
+.cat1 .title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+  margin-top: 1em;
 }
 
-.category-name {
-  font-size: 0.875rem; 
-}
-
-.category-count {
-  opacity: 0.5;
-  margin-bottom: 10px; 
-  font-size: 0.75rem; 
+.cat1 .subtitle {
+  font-size: 12px;
+  color: #555;
+  margin: 4px 0 0;
 }
 </style>

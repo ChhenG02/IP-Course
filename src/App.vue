@@ -1,84 +1,152 @@
-<script setup>
-import { onMounted, computed } from "vue";
-import { useProductStore } from "./stores/productStore";
-import Category from "./components/Category.vue";
-import Promotion from "./components/Promotion.vue";
-import FeatureCategory from "./components/FeatureCategory.vue";
-
-const productStore = useProductStore();
-
-const filteredCategories = computed(() => productStore.filteredCategories);
-
-const selectGroup = (group) => {
-  productStore.setSelectedGroup(group);
-};
-
-onMounted(async () => {
-  await productStore.fetchCategories();
-  await productStore.fetchPromotions();
-  await productStore.fetchGroups();
-  console.log("Categories loaded:", productStore.categories);
-  console.log("Promotions loaded:", productStore.promotions);
-  console.log("Groups loaded:", productStore.groups);
-});
-</script>
-
 <template>
-  <div id="app">
-    <div class="flex flex-col">
-      <div class="flex justify-between mt-5 mx-3">
-        <h1 class="text-3xl">Featured Categories</h1>
-        <div>
-          <div class="flex gap-2 items-center">
-            <FeatureCategory
-              v-for="(group, index) in productStore.groups"
-              :key="index"
-              :name="group"
-              @click="() => selectGroup(group)"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="category-card">
+  <div>
+    <!-- Menu Section (Navigation Bar for Categories) -->
+    <Menu 
+      mode="categories" 
+      @categorySelected="filterCategories" 
+    />
+
+    <!-- Categories Section -->
+    <div class="categories">
       <Category
-        v-for="(f, index) in filteredCategories" 
+        v-for="(category, index) in filteredCategories"
         :key="index"
-        :image="f.image"
-        :name="f.name"
-        :productCount="f.productCount"
-        :color="f.color"
+        :categoryImage="category.image"
+        :categoryText="category.name"
+        :itemsCount="category.productCount"
+        :categoryColor="category.color"
       />
     </div>
 
-    <div class="promotion-section">
+    <br />
+
+    <!-- Promotions Section -->
+    <div class="promotions">
       <Promotion
-        v-for="(promotion, index) in productStore.promotions" 
+        v-for="(promotion, index) in promotions"
         :key="index"
-        :title="promotion.title"
-        :description="promotion.description"
-        :image="promotion.image"
-        :color="promotion.color"
-        :width="promotion.width"
+        :promotionTitle="promotion.title"
+        :promotionImage="promotion.image"
+        :promotionColor="promotion.color"
+        :buttonColor="promotion.buttonColor"
+        :promotionUrl="promotion.url"
+      />
+    </div>
+
+    <br />
+
+    <!-- Menu Section (Navigation Bar for Products) -->
+    <Menu 
+      mode="products" 
+      @productSelected="filterProducts" 
+    />
+
+    <!-- Products Section -->
+    <div class="products">
+      <Product
+        v-for="(product, index) in filteredProducts"
+        :key="index"
+        :productId="product.id"
       />
     </div>
   </div>
 </template>
 
-<style scoped>
-#app {
-  display: flex;
-  flex-direction: column;
+<script>
+// Import Components
+import Category from './components/Category.vue';
+import Promotion from './components/Promotion.vue';
+import Menu from './components/Menu.vue';
+import Product from './components/Product.vue';
+import { useProductStore } from './stores/productStore'; // Import the Pinia store
+
+export default {
+  name: 'App',
+
+  components: {
+    Category,
+    Promotion,
+    Menu,
+    Product,
+  },
+
+  data() {
+    return {
+      selectedCategoryGroup: 'All', // Selected group for categories
+      selectedProductGroup: 'All', // Selected group for products
+      filteredCategories: [], // Filtered list of categories
+      filteredProducts: [], // Filtered list of products
+    };
+  },
+
+  computed: {
+    promotions() {
+      return this.productStore.promotions; // Access promotions from the store
+    },
+    allCategories() {
+      return this.productStore.categories; // Access all categories from the store
+    },
+    allProducts() {
+      return this.productStore.products; // Access all products from the store
+    },
+  },
+
+  methods: {
+    /**
+     * Filter categories based on the selected group from Menu
+     */
+    filterCategories(group) {
+      this.selectedCategoryGroup = group;
+      this.filteredCategories =
+        group === 'All'
+          ? this.allCategories // Show all categories
+          : this.productStore.getCategoriesByGroup(group); // Filter by group
+    },
+
+    /**
+     * Filter products based on the selected group from Menu
+     */
+    filterProducts(group) {
+      this.selectedProductGroup = group;
+      this.filteredProducts =
+        group === 'All'
+          ? this.allProducts // Show all products
+          : this.productStore.getProductsByGroup(group); // Filter by group
+    },
+  },
+
+  mounted() {
+    // Fetch categories, promotions, and products when the component is mounted
+    this.productStore.fetchCategories().then(() => {
+      this.filteredCategories = this.allCategories; // Initialize with all categories
+    });
+    this.productStore.fetchPromotions();
+    this.productStore.fetchProducts().then(() => {
+      this.filteredProducts = this.allProducts; // Initialize with all products
+    });
+  },
+
+  setup() {
+    // Set up Pinia store in the setup function (Composition API)
+    const productStore = useProductStore();
+    return { productStore };
+  },
+};
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap');
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  margin: 1em;
 }
-.category-card {
+
+.categories,
+.promotions,
+.products {
   display: flex;
-  padding: 20px;
-}
-.promotion-section {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 </style>

@@ -1,32 +1,85 @@
 <template>
-    <div
-      class="relative top-[20px] w-full h-[310px] flex gap-1 rounded-lg mt-2 overflow-hidden border-2"
-    >
-      <img :src="image" :alt="image" class="absolute scale-50 right-0 bottom-0" />
-      <h2 class="absolute top-20 left-10 text-3xl w-[270px]">
-        {{ title }}
-      </h2>
-      <div class="absolute bottom-10 left-10">
-        <Button @click="shopNow(promotion)" :class="buttonColor">Shop Now</Button>
+  <div class="ban1" :style="{ backgroundColor: promotionColor }">
+    <div class="sub-ban2">
+      <div class="sub-ban1">
+        <div class="sub-text">
+          <p>{{ promotionTitle }}</p>
+        </div>
+        <!-- Pass the promotion object to the shopNow method -->
+        <Button :buttonColor="buttonColor" @click="shopNow(promotion)" />
       </div>
     </div>
-  </template>
-  
-  <script>
-  import Button from "./Button.vue";
-  export default {
-    name: "Promotion",
-    props: {
-      title: String,
-      buttonColor: String,
-      image: String,
-      color: String,
-    },
-    components: { Button },
-    methods: {
-      shopNow(promotion) {
-        alert("Let's shop: " + this.title);
+    <img :src="promotionImage" alt="promotion image" />
+  </div>
+</template>
+
+<script>
+import Button from './Button.vue';
+
+export default {
+  name: 'Promotion',
+  components: {
+    Button,
+  },
+  props: {
+    promotionTitle: String,
+    promotionColor: String,
+    promotionImage: String,
+    buttonColor: String,
+  },
+  data() {
+    return {
+      // Example of a promotion object, you can also pass this via props
+      promotion: {
+        title: this.promotionTitle,
+        color: this.promotionColor,
+        image: this.promotionImage,
       },
+    };
+  },
+  methods: {
+    // Method to handle the click event and accept the promotion object as an argument
+    shopNow(promotion) {
+      alert("Let's shop: " + promotion.title); // This will show the title of the promotion
+      // You can add more actions here, like redirecting or performing other logic
     },
-  };
-  </script>
+  },
+};
+</script>
+
+<style scoped>
+.ban1 {
+  padding: 20px;
+  width: 512px;
+  height: 300px;
+  display: flex;
+  justify-content: space-evenly;
+  border: rgb(220, 209, 209) 1px solid;
+  border-radius: 5px;
+}
+
+.ban1 img {
+  object-fit: contain;
+}
+
+.sub-ban1 {
+  margin-top: 20%;
+  margin-left: 1em;
+  align-items: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-text {
+  max-width: 100%;
+  max-height: 60%;
+  object-fit: contain;
+}
+
+.sub-text p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+</style>
