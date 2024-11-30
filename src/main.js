@@ -1,17 +1,14 @@
-
-
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';
 
+import App from './App.vue';
+import router from './router'; // Import the router
 
-import App from './App.vue'
-// import router from './router'
+const app = createApp(App);
 
-const app = createApp(App)
+app.use(createPinia());
+app.use(router); // Register the router
 
-app.use(createPinia())
-// app.use(router)
-
-app.mount('#app')
+app.mount('#app');

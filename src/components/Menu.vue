@@ -36,7 +36,7 @@
     props: {
       mode: {
         type: String,
-        default: "categories", // Default mode
+        default: "categories", 
       },
     },
   
@@ -56,12 +56,12 @@
   
       // Method to handle group selection
       const selectGroup = (groupName) => {
-        selectedGroupName.value = groupName; // Update active selection
-        productStore.setSelectedGroup(groupName); // Optionally update the store
+        selectedGroupName.value = groupName; 
+        productStore.setSelectedGroup(groupName); 
         emit(
           props.mode === "categories" ? "categorySelected" : "productSelected",
           groupName
-        ); // Emit corresponding event
+        ); 
       };
   
       return {
@@ -108,7 +108,7 @@
   
   .nav-list li.active {
     font-weight: 700;
-    color: #007bff; /* Highlight active item */
+    color: #007bff; 
   }
   </style>
   
