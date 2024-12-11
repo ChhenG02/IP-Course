@@ -1,16 +1,18 @@
 <template>
-  <div class="ban1" :style="{ backgroundColor: promotionColor }">
-    <div class="sub-ban2">
-      <div class="sub-ban1">
-        <div class="sub-text">
-          <p>{{ promotionTitle }}</p>
+   <router-link to="/productDetail" class="promotion-link">
+    <div class="ban1" :style="{ backgroundColor: promotionColor }">
+      <div class="sub-ban2">
+        <div class="sub-ban1">
+          <div class="sub-text">
+            <p>{{ promotionTitle }}</p>
+          </div>
+          <!-- Button for additional interaction -->
+          <Button :buttonColor="buttonColor" @click="shopNow(promotion)" />
         </div>
-        <!-- Pass the promotion object to the shopNow method -->
-        <Button :buttonColor="buttonColor" @click="shopNow(promotion)" />
       </div>
+      <img :src="promotionImage" alt="promotion image" />
     </div>
-    <img :src="promotionImage" alt="promotion image" />
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -29,7 +31,6 @@ export default {
   },
   data() {
     return {
-      // Example of a promotion object, you can also pass this via props
       promotion: {
         title: this.promotionTitle,
         color: this.promotionColor,
@@ -38,10 +39,8 @@ export default {
     };
   },
   methods: {
-    // Method to handle the click event and accept the promotion object as an argument
     shopNow(promotion) {
-      alert("Let's shop: " + promotion.title); // This will show the title of the promotion
-      // You can add more actions here, like redirecting or performing other logic
+     // alert("Let's shop: " + promotion.title);
     },
   },
 };
@@ -81,5 +80,10 @@ export default {
   font-weight: bold;
   color: #333;
   margin-bottom: 20px;
+}
+
+.promotion-link {
+  text-decoration: none;
+  display: block;
 }
 </style>

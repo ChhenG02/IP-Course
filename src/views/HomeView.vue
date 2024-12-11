@@ -1,4 +1,6 @@
 <template>
+  <br>
+        <ShowCase/>
     <div>
       <!-- Menu Section (Navigation Bar for Categories) -->
       <Menu 
@@ -58,7 +60,9 @@
   import Promotion from '@/components/Promotion.vue';
   import Menu from '@/components/Menu.vue';
   import Product from '@/components/Product.vue';
-  import { useProductStore } from '@/stores/productStore'; // Import the Pinia store
+  import NavBar from '@/components/NavBar.vue';
+  import ShowCase from '@/components/ShowCase.vue';
+  import { useProductStore } from '@/stores/productStore'; 
   
   export default {
     name: 'App',
@@ -68,26 +72,28 @@
       Promotion,
       Menu,
       Product,
+      NavBar,
+      ShowCase,
     },
   
     data() {
       return {
-        selectedCategoryGroup: 'All', // Selected group for categories
-        selectedProductGroup: 'All', // Selected group for products
-        filteredCategories: [], // Filtered list of categories
-        filteredProducts: [], // Filtered list of products
+        selectedCategoryGroup: 'All', 
+        selectedProductGroup: 'All', 
+        filteredCategories: [], 
+        filteredProducts: [], 
       };
     },
   
     computed: {
       promotions() {
-        return this.productStore.promotions; // Access promotions from the store
+        return this.productStore.promotions; 
       },
       allCategories() {
-        return this.productStore.categories; // Access all categories from the store
+        return this.productStore.categories; 
       },
       allProducts() {
-        return this.productStore.products; // Access all products from the store
+        return this.productStore.products; 
       },
     },
   

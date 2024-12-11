@@ -1,9 +1,11 @@
 <template>
-  <div class="cat1" :style="{ backgroundColor: categoryColor }">
-    <img :src="categoryImage" alt="category image" />
-    <p class="title">{{ categoryText }}</p>
-    <p class="subtitle">{{ itemsCount }} items</p>
-  </div>
+   <router-link to="/pageHeader" class="category-link">
+    <div class="cat1" :style="{ backgroundColor: categoryColor }">
+      <img :src="categoryImage" alt="category image" />
+      <p class="title">{{ categoryText }}</p>
+      <p class="subtitle">{{ itemsCount }} items</p>
+    </div>
+  </router-link>
 </template>
 
 <script>
@@ -31,6 +33,12 @@ export default {
   box-sizing: border-box;
   text-align: center;
   cursor: pointer;
+}
+
+
+.category-link {
+  text-decoration: none; 
+  display: block;
 }
 
 .cat1 img {
