@@ -5,24 +5,24 @@
       <router-link 
         to="/page1" 
         class="router-link" 
-        active-class="active"
-        @click.native="setPage(1)"
+        :class="{ active: page === 1 }"
+        @click="setPage(1)"
       >
         Page 1
       </router-link>
       <router-link 
         to="/page2" 
         class="router-link" 
-        active-class="active"
-        @click.native="setPage(2)"
+        :class="{ active: page === 2 }"
+        @click="setPage(2)"
       >
         Page 2
       </router-link>
       <router-link 
         to="/page3" 
         class="router-link" 
-        active-class="active"
-        @click.native="setPage(3)"
+        :class="{ active: page === 3 }"
+        @click="setPage(3)"
       >
         Page 3
       </router-link>
@@ -33,11 +33,17 @@
 <script>
 export default {
   name: "Header",
+  props: {
+    page: {
+      type: Number,
+      required: true,
+    },
+  },
   methods: {
     setPage(pageNumber) {
-      this.$emit('page-changed', pageNumber);
-    }
-  }
+      this.$emit("page-changed", pageNumber);
+    },
+  },
 };
 </script>
 

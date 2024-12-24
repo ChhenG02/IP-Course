@@ -1,36 +1,37 @@
 <template>
   <div id="app">
-    <Header @page-changed="handlePageChanged" />
-    <Menu :page="currentPage" />
-    <router-view />
-    <Footer />
+    <Header @page-changed="onPageChanged" :page="currentPage" />
+    <Menu :page="currentPage" :pageMessages="pageMessages" />
+    <router-view :key="currentPage" />
   </div>
+  <Footer/>
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
-import Menu from "./components/Menu.vue";
+import Header from "@/components/Header.vue";
+import Menu from "@/components/Menu.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: "App",
   components: {
     Header,
-    Footer,
     Menu,
+    Footer,
   },
   data() {
     return {
       currentPage: 1, 
+      pageMessages: {}, 
     };
   },
   methods: {
-    handlePageChanged(pageNumber) {
-      this.currentPage = pageNumber; 
-    }
-  }
+    onPageChanged(pageNumber) {
+      this.currentPage = pageNumber;
+    },
+    updateMessage(payload) {
+      this.pageMessages[payload.page] = payload.message;
+    },
+  },
 };
 </script>
-
-<style>
-</style>
